@@ -21,18 +21,21 @@ from fastapi.security.api_key import APIKeyHeader, APIKey
 from starlette.status import HTTP_403_FORBIDDEN
 from config import settings
 from models import QueryRequest
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
-config = yaml.safe_load(open("config.yml"))
+#config = yaml.safe_load(open("config.yml"))
 
 #os.environ["OPENROUTER_API_KEY"] = config["OPENROUTER_API_KEY"]
-os.environ["LANGCHAIN_API_KEY"] = config["LANGCHAIN_API_KEY"]
-os.environ["LANGCHAIN_TRACING_V2"] = str(config["LANGCHAIN_TRACING_V2"]).lower()
-os.environ["LANGCHAIN_ENDPOINT"] = config["LANGCHAIN_ENDPOINT"]
-os.environ["LANGCHAIN_PROJECT"] = config["LANGCHAIN_PROJECT"]
-os.environ["LANGCHAIN_HUB_API_KEY"] = config["LANGCHAIN_API_KEY"]
-os.environ["LANGCHAIN_HUB_API_URL"] = config["LANGCHAIN_HUB_API_URL"]
-os.environ["GOOGLE_API_KEY"] = config["GOOGLE_API_KEY"]
+#os.environ["LANGCHAIN_API_KEY"] = config["LANGCHAIN_API_KEY"]
+#os.environ["LANGCHAIN_TRACING_V2"] = str(config["LANGCHAIN_TRACING_V2"]).lower()
+#os.environ["LANGCHAIN_ENDPOINT"] = config["LANGCHAIN_ENDPOINT"]
+#os.environ["LANGCHAIN_PROJECT"] = config["LANGCHAIN_PROJECT"]
+#os.environ["LANGCHAIN_HUB_API_KEY"] = config["LANGCHAIN_API_KEY"]
+#os.environ["LANGCHAIN_HUB_API_URL"] = config["LANGCHAIN_HUB_API_URL"]
+#os.environ["GOOGLE_API_KEY"] = config["GOOGLE_API_KEY"]
 
 #GOOGLE_API_KEY = config["GOOGLE_API_KEY"]
 
@@ -51,7 +54,7 @@ llm = ChatGoogleGenerativeAI(
     max_tokens=None,
     timeout=None,
     max_retries=4,
-    google_api_key=os.environ["GOOGLE_API_KEY"],
+    google_api_key=os.getenv("GOOGLE_API_KEY"),
     # other params...
 )
 
