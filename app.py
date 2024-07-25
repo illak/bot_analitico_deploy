@@ -112,11 +112,7 @@ partir de la siguiente información que debe traducir al español. Solo utilice 
 no sea técnico.
 
 Utilice la siguiente sintaxis para dar formato Markdown a la respuesta:
-Negrita *\n
-Cursiva _ (guión bajo)\n
-Lista con viñetas * o -\n
-Monoespacio ` (comilla inversa)\n
-Bloque monoespacio ``` (tres comillas inversas)\n
+Para los títulos: *<TÍTULO>* (sólo utilice un *)
 
 Pasos realizados por el agente analítico: {intermediate_steps}\n
 
