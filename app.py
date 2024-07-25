@@ -202,7 +202,7 @@ async def get_api_key(api_key_header: str = Depends(api_key_header)):
 def read_public():
     return {"message": "This is a public endpoint"}
 
-@app.get("/protected")
+@app.post("/protected")
 def read_protected(
     text: QueryRequest,
     api_key: APIKey = Depends(get_api_key)
