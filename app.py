@@ -63,6 +63,7 @@ llm = ChatGoogleGenerativeAI(
 
 
 def waiting_msg(space_name):
+    print(space_name)
     # Specify required scopes.
     SCOPES = ['https://www.googleapis.com/auth/chat.bot']
 
@@ -81,7 +82,7 @@ def waiting_msg(space_name):
         # Replace SPACE with a space name.
         # Obtain the space name from the spaces resource of Chat API,
         # or from a space's URL.
-        parent='spaces/'+ space_name,
+        parent='spaces/'+ space_name
 
         # The message to create.
         body={'text': 'Estoy consultando mi base de conocimiento, esto puede demorar un rato...'}
