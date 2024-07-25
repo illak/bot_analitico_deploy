@@ -1,0 +1,11 @@
+langchain
+langchain-google-genai
+pillow
+langchain_experimental
+langsmith
+langgraph
+httpx
+fastapi
+uvicorn
+python-dotenv
+pydantic-settings
