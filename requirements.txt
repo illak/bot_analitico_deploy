@@ -9,3 +9,6 @@ fastapi
 uvicorn
 python-dotenv
 pydantic-settings
+pandas
+ipython
+tabulate

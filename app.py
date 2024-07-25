@@ -55,20 +55,22 @@ llm = ChatGoogleGenerativeAI(
     # other params...
 )
 
-# AGENTE CSV
-path_csv = "https://docs.google.com/spreadsheets/d/1DJf-7PD5pje0YXSuYezBTglg_EFQb0C88WqJEFWVpe4/export?format=csv"
-
-csv_agent = create_csv_agent(
-    llm,
-    path_csv,
-    verbose=True,
-    agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    allow_dangerous_code=True,
-    return_intermediate_steps=True
-)
 
 # Define the function that calls the model
 def call_csv_agent(state):
+
+    # AGENTE CSV
+    path_csv = "https://docs.google.com/spreadsheets/d/1DJf-7PD5pje0YXSuYezBTglg_EFQb0C88WqJEFWVpe4/export?format=csv"
+
+    csv_agent = create_csv_agent(
+        llm,
+        path_csv,
+        verbose=True,
+        agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        allow_dangerous_code=True,
+        return_intermediate_steps=True
+    )
+
     question = state['messages'][0].content
 
     with pd.option_context('display.max_rows', None,
@@ -82,7 +84,6 @@ def call_csv_agent(state):
         intermediate_steps_glob= response['intermediate_steps']
 
         print(response['intermediate_steps'])
-        print("//" * 30)
 
         """for step in response['intermediate_steps'][0]:
             intermediate_steps = intermediate_steps + step.log"""
@@ -98,28 +99,8 @@ que recibe de otro primer agente analítico.
 
 La pregunta original que responde el primer agente es: {question}\n
 
-Debe considerar sólo una de las siguientes opciones:
-
-1) Si la respuesta del agente analítico contiene una tabla, deberá cambiar los
-nombres de las columnas por nombres que sean más "amigables" o fáciles de
-entender, por ejemplo:
-
-"linea_formativa" -> "Línea Formativa"
-"anio" -> "Año"
-"matricula_inicial" -> "Matrícula Inicial"
-"aprobados_seminario" -> "Aprobados Seminario"
-y así sucesivamente...
-El nombre de la columna no debe ser muy diferentede la columna original
-
-Si los nombres de las columnas son años, se deben dejar tal como están.
-Si el nombre de la columna es vacio, dejarlo como está.
-Debe respetar la estructura de la tabla original.
-Además debe transformar la tabla a formato markdown.
-Acompañe la tabla con un título descriptivo.
-
-2) Si la respuesta del primer agente no contiene una tabla, entonces sólo debe responder con el resultado del primer agente.
-Agregue una descripción inicial de lo que se está respondiendo tomando como referencia la pregunta original.
-
+A partir de la respuesta del agente analítico, genera una respuesta manteniendo
+la información original pero cambiando la estructura de tabla a una estructura de texto.
 
 Respuesta agente analítico:\n {input}\n
 
@@ -194,13 +175,10 @@ def use_bot_app(query):
 
     return ans
 
-#ans = use_bot_app("hello")
-
-#print(ans["messages"][-1].content)
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+#logging.basicConfig(level=logging.INFO)
+#logger = logging.getLogger(__name__)
 
 API_KEY_NAME = "Authorization"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
@@ -226,7 +204,7 @@ def read_protected(
     text: QueryRequest,
     api_key: APIKey = Depends(get_api_key)
 ):
-    logger.info(f"Received text: {text.text}")
+    #logger.info(f"Received text: {text.text}")
     
     ans = use_bot_app(text.text)
     #print(ans["messages"][-1].content)
