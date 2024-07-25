@@ -23,6 +23,9 @@ from config import settings
 from models import QueryRequest
 from dotenv import load_dotenv
 
+from apiclient.discovery import build
+from google.oauth2 import service_account
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -57,6 +60,35 @@ llm = ChatGoogleGenerativeAI(
     google_api_key=os.getenv("GOOGLE_API_KEY"),
     # other params...
 )
+
+
+def waiting_msg(space_name):
+    # Specify required scopes.
+    SCOPES = ['https://www.googleapis.com/auth/chat.bot']
+
+    # Specify service account details.
+    CREDENTIALS = service_account.Credentials.from_service_account_file(
+        'credentials.json', scopes=SCOPES)
+
+    # Build the URI and authenticate with the service account.
+    chat = build('chat', 'v1', credentials=CREDENTIALS)
+
+    # Create a Chat message.
+    result = chat.spaces().messages().create(
+
+        # The space to create the message in.
+        #
+        # Replace SPACE with a space name.
+        # Obtain the space name from the spaces resource of Chat API,
+        # or from a space's URL.
+        parent='spaces/'+ space_name,
+
+        # The message to create.
+        body={'text': 'Estoy consultando mi base de conocimiento, esto puede demorar un rato...'}
+
+    ).execute()
+
+    print(result)
 
 
 # Define the function that calls the model
@@ -201,9 +233,11 @@ async def get_api_key(api_key_header: str = Depends(api_key_header)):
             status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials"
         )
 
+
 @app.get("/public")
 def read_public():
     return {"message": "This is a public endpoint"}
+
 
 @app.post("/protected")
 def read_protected(
@@ -212,6 +246,7 @@ def read_protected(
 ):
     #logger.info(f"Received text: {text.text}")
     
+    waiting_msg(text.space_name)
     ans = use_bot_app(text.text)
     #print(ans["messages"][-1].content)
 

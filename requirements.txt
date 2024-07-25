@@ -12,3 +12,5 @@ pydantic-settings
 pandas
 ipython
 tabulate
+google-api-python-client
+google-auth
