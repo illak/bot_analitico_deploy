@@ -111,6 +111,13 @@ Finalmente agregue a la respuesta una explicación breve de los pasos realizados
 partir de la siguiente información que debe traducir al español. Solo utilice la sección "Though" y
 no sea técnico.
 
+Utilice la siguiente sintaxis para dar formato Markdown a la respuesta:
+Negrita *\n
+Cursiva _ (guión bajo)\n
+Lista con viñetas * o -\n
+Monoespacio ` (comilla inversa)\n
+Bloque monoespacio ``` (tres comillas inversas)\n
+
 Pasos realizados por el agente analítico: {intermediate_steps}\n
 
 Respuesta:\n
