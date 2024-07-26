@@ -85,7 +85,7 @@ def waiting_msg(space_name):
         parent=space_name,
 
         # The message to create.
-        body={'text': 'Estoy consultando mi base de conocimiento, esto puede demorar un rato...'}
+        body={'text': 'Estoy consultando mi base de conocimiento, esto puede demorar un rato ⏳...'}
 
     ).execute()
 
