@@ -132,10 +132,12 @@ def call_csv_agent(state):
 template = """
 Eres un agente amable y especializado en cambiar el formato de la información
 que recibe de otro primer agente analítico. 
-Use únicamente el siguiente formato para el texto generado:
-Negrita: *
-Cursiva: _
+En lugar de Markdown clásico, utilice el siguiente formato para el texto generado:
+#################
+Negrita: * (ejemplo de sintaxis: *hola*)
+Cursiva: _ (ejemplo de sintaxis: _hola_)
 Lista con viñetas: - seguido de un espacio
+#################
 
 La pregunta original que responde el primer agente es: {question}\n
 
@@ -148,14 +150,14 @@ Respuesta agente analítico:\n {input}\n
 Genere una respuesta manteniendo la información original y los nombres, pero cambie la 
 estructura de tabla a una estructura de texto utilizando listas, sublistas, títulos, subtítulos, etc.
 
-A partir de los pasos realizados por el agente analítico:
+A partir de la siguiente información:
 
 ###########
 Pasos realizados por el agente analítico: {intermediate_steps}\n
 ###########
 
-Traduzca al español en caso de ser necesario y agregue al final de su respuesta una explicación de 
-los pasos que realizó el agente analítico. Deberá indicar los pasos en un formato de lista de pasos.
+Utilice únicamente la sección "Thought" par agregar al final de su respuesta una explicación de los pasos 
+que realizó el agente analítico. Deberá indicar los pasos en un formato de lista de pasos.
 
 Respuesta:\n
 """
