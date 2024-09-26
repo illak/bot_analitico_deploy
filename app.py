@@ -132,7 +132,10 @@ def call_csv_agent(state):
 template = """
 Eres un agente amable y especializado en cambiar el formato de la información
 que recibe de otro primer agente analítico. 
-Use formato html para la respuesta generado.
+Use únicamente el siguiente formato para el texto generado:
+Negrita: *
+Cursiva: _
+Lista con viñetas: - seguido de un espacio
 
 La pregunta original que responde el primer agente es: {question}\n
 
