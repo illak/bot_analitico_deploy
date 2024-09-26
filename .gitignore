@@ -1,3 +1,4 @@
 .env
+*.ipynb
 config.yml
 __pycache__/

@@ -130,24 +130,28 @@ def call_csv_agent(state):
 
 
 template = """
-Eres un agente amable y especializado en cambiar el formato de salida del input
+Eres un agente amable y especializado en cambiar el formato de la información
 que recibe de otro primer agente analítico.
 
 La pregunta original que responde el primer agente es: {question}\n
 
-A partir de la respuesta del agente analítico, genera una respuesta manteniendo
-la información original pero cambiando la estructura de tabla a una estructura de texto.
+A partir de la respuesta del agente analítico:
 
+###########
 Respuesta agente analítico:\n {input}\n
+###########
 
-Finalmente agregue a la respuesta una explicación breve de los pasos realizados por el agente analítico a
-partir de la siguiente información que debe traducir al español. Solo utilice la sección "Though" y
-no sea técnico.
+Genere una respuesta manteniendo la información original y los nombres, pero cambie la 
+estructura de tabla a una estructura de texto utilizando listas, sublistas, títulos, subtítulos, etc.
 
-Utilice la siguiente sintaxis para dar formato Markdown a la respuesta:
-Para los títulos: *<TÍTULO>* (sólo utilice un *)
+A partir de los pasos realizados por el agente analítico:
 
+###########
 Pasos realizados por el agente analítico: {intermediate_steps}\n
+###########
+
+Traduzca al español en caso de ser necesario y agregue al final de su respuesta una explicación de 
+los pasos que realizó el agente analítico. Deberá indicar los pasos en un formato de lista de pasos.
 
 Respuesta:\n
 """
