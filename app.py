@@ -2,6 +2,7 @@ import os
 import yaml
 import pandas as pd
 import logging
+import re
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_experimental.agents.agent_toolkits import create_csv_agent
@@ -215,7 +216,10 @@ def use_bot_app(query):
 
     return ans
 
-
+# Función para reemplazar los encabezados
+def reemplazar_encabezados(texto):
+    # Reemplaza encabezados con asteriscos
+    return re.sub(r'^(#+)\s*(.*)$', r'*\2*', texto, flags=re.MULTILINE)
 # Configure logging
 #logging.basicConfig(level=logging.INFO)
 #logger = logging.getLogger(__name__)
@@ -249,7 +253,8 @@ def read_protected(
     waiting_msg(text.space_name)
     ans = use_bot_app(text.text)
     print(ans["messages"][-1].content)
-    clean_msg = str(ans["messages"][-1].content).replace('### ','*').replace('## ','*').replace('# ','*').replace('**','*')
+
+    clean_msg = reemplazar_encabezados(ans["messages"][-1].content).replace('**','*')
 
     return {"message": "respuesta del bot", "text": clean_msg}
 
