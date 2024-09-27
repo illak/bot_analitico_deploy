@@ -63,7 +63,6 @@ llm = ChatGoogleGenerativeAI(
 
 
 def waiting_msg(space_name):
-    print(space_name)
     # Specify required scopes.
     SCOPES = ['https://www.googleapis.com/auth/chat.bot']
 
@@ -88,8 +87,6 @@ def waiting_msg(space_name):
         body={'text': 'Estoy consultando mi base de conocimiento, esto puede demorar un rato ⏳...'}
 
     ).execute()
-
-    print(result)
 
 
 # Define the function that calls the model
@@ -119,7 +116,7 @@ def call_csv_agent(state):
         global intermediate_steps_glob
         intermediate_steps_glob= response['intermediate_steps']
 
-        print(response['intermediate_steps'])
+        #print(response['intermediate_steps'])
 
         """for step in response['intermediate_steps'][0]:
             intermediate_steps = intermediate_steps + step.log"""
@@ -227,11 +224,9 @@ API_KEY_NAME = "Authorization"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 app = FastAPI()
-print(api_key_header)
 
 async def get_api_key(api_key_header: str = Depends(api_key_header)):
     if api_key_header and api_key_header.split(" ")[1] == settings.api_key:
-        print("COSO")
         return api_key_header
     else:
         raise HTTPException(
