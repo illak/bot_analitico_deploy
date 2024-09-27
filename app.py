@@ -131,13 +131,7 @@ def call_csv_agent(state):
 
 template = """
 Eres un agente amable y especializado en cambiar el formato de la información
-que recibe de otro primer agente analítico. 
-En lugar de Markdown clásico, utilice el siguiente formato para el texto generado:
-#################
-Negrita: * (ejemplo de sintaxis: *hola*)
-Cursiva: _ (ejemplo de sintaxis: _hola_)
-Lista con viñetas: - seguido de un espacio
-#################
+que recibe de otro primer agente analítico.
 
 La pregunta original que responde el primer agente es: {question}\n
 
@@ -260,8 +254,9 @@ def read_protected(
     waiting_msg(text.space_name)
     ans = use_bot_app(text.text)
     #print(ans["messages"][-1].content)
+    clean_msg = str(ans["messages"][-1].content).replace('###','*').replace('##','*').replace('##','*').replace('**','*')
 
-    return {"message": "respuesta del bot", "text": ans["messages"][-1].content}
+    return {"message": "respuesta del bot", "text": clean_msg}
 
 if __name__ == "__main__":
     import uvicorn
