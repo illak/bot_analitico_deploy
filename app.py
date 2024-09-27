@@ -248,7 +248,7 @@ def read_protected(
     
     waiting_msg(text.space_name)
     ans = use_bot_app(text.text)
-    #print(ans["messages"][-1].content)
+    print(ans["messages"][-1].content)
     clean_msg = str(ans["messages"][-1].content).replace('### ','*').replace('##','* ').replace('# ','*').replace('**','*')
 
     return {"message": "respuesta del bot", "text": clean_msg}
