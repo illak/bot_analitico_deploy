@@ -106,14 +106,13 @@ def route_prompt(state):
     Respuesta:"""
     
     # Obtener decisión
-    #response = llm.predict(router_prompt)
     response = llm.invoke(router_prompt)
     print(response)
     return response.content.strip()
 
 
 
-# Define the function that calls the model
+# Define al agente que consulta el CSV
 def call_csv_agent(state):
 
     # AGENTE CSV
@@ -211,14 +210,6 @@ def call_parse_output_agent(state):
 def build_graph():
     graph_builder = StateGraph(State)
 
-
-    #graph_builder.add_node("router", route_prompt)
-
-    graph_builder.add_node("csv_agent", call_csv_agent)
-    graph_builder.add_node("parse_output_agent", call_parse_output_agent)
-
-    #graph_builder.set_entry_point("csv_agent")
-    #graph_builder.set_entry_point("router")
     graph_builder.set_conditional_entry_point(
         route_prompt,
         {
@@ -226,6 +217,8 @@ def build_graph():
             "CSV": "csv_agent"
         })
 
+    graph_builder.add_node("csv_agent", call_csv_agent)
+    graph_builder.add_node("parse_output_agent", call_parse_output_agent)
 
     graph_builder.add_edge('csv_agent', 'parse_output_agent')
 
