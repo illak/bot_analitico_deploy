@@ -90,6 +90,29 @@ def waiting_msg(space_name):
     ).execute()
 
 
+# Función para determinar qué agente usar
+def route_prompt(state):
+    # Obtener el último mensaje del usuario
+    #last_message = state["messages"][-1].content
+    last_message =  state['messages'][0].content
+    
+    # Prompt para el router
+    router_prompt = f"""Decide si la siguiente consulta requiere análisis de datos CSV o una respuesta conversacional simple.
+    
+    Consulta: {last_message}
+    
+    Responde solo con 'CSV' si la consulta requiere análisis de datos o 'CONVERSACIONAL' si es una pregunta general.
+    
+    Respuesta:"""
+    
+    # Obtener decisión
+    #response = llm.predict(router_prompt)
+    response = llm.invoke(router_prompt)
+    print(response)
+    return response.content.strip()
+
+
+
 # Define the function that calls the model
 def call_csv_agent(state):
 
@@ -121,7 +144,10 @@ def call_csv_agent(state):
 
         """for step in response['intermediate_steps'][0]:
             intermediate_steps = intermediate_steps + step.log"""
-        intermediate_steps = response['intermediate_steps'][0][0].log
+        print(response['intermediate_steps'])
+        intermediate_steps = ''
+        if(response['intermediate_steps']):
+            intermediate_steps = intermediate_steps + response['intermediate_steps'][0][0].log
 
     # We return a list, because this will get added to the existing list
     return {"messages": [output], "question": question, "intermediate_steps": intermediate_steps}
@@ -185,10 +211,21 @@ def call_parse_output_agent(state):
 def build_graph():
     graph_builder = StateGraph(State)
 
+
+    #graph_builder.add_node("router", route_prompt)
+
     graph_builder.add_node("csv_agent", call_csv_agent)
     graph_builder.add_node("parse_output_agent", call_parse_output_agent)
 
-    graph_builder.set_entry_point("csv_agent")
+    #graph_builder.set_entry_point("csv_agent")
+    #graph_builder.set_entry_point("router")
+    graph_builder.set_conditional_entry_point(
+        route_prompt,
+        {
+            "CONVERSACIONAL": END,
+            "CSV": "csv_agent"
+        })
+
 
     graph_builder.add_edge('csv_agent', 'parse_output_agent')
 
